@@ -7,7 +7,8 @@ Repo with my dotfiles.
 - git (`~/.gitconfig` or `~/.config/git/config`) - [here](./git/.gitconfig)
 - zsh (`~/.zshrc`) - [here](./zsh/.zshrc)
 - wezterm (`~/.wezterm.lua`) - [here](./wezterm/.wezterm.lua)
-- neovim - *comming soon*
+- neovim - [Yu-Leo/nvim](https://github.com/Yu-Leo/nvim)
+- goland - [here](./goland)
 
 ## Archive
 

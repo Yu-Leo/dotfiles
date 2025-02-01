@@ -6,39 +6,49 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
-config.color_scheme = "OneDark (base16)"
+config.color_scheme = "YuGruvbox"
 
-config.colors = {
-	foreground = "#a0a8b7",
-	background = "#1f2329",
-	cursor_bg = "#a0a8b7",
-	cursor_fg = "black",
-	cursor_border = "#a0a8b7",
-	ansi = {
-		"#0e1013",
-		"#e55561",
-		"#8ebd6b",
-		"#e2b86b",
-		"#4fa6ed",
-		"#c678dd",
-		"#48b0bd",
-		"#abb2bf",
-	},
+config.color_schemes = {
+	["YuGruvbox"] = {
+		foreground = "#d5c4a1",
+		background = "#282828",
 
-	brights = {
-		"#5c6370",
-		"#e06c75",
-		"#98c379",
-		"#d19a66",
-		"#61afef",
-		"#c678dd",
-		"#56b6c2",
-		"#ffffff",
+		cursor_bg = "#d5c4a1",
+		cursor_fg = "#282828",
+		cursor_border = "#d5c4a1",
+
+		selection_fg = "#282828",
+		selection_bg = "#d5c4a1",
+
+		scrollbar_thumb = "#423e3c",
+
+		split = "#484442",
+
+		ansi = {
+			"#232323",
+			"#fb4934",
+			"#b8bb26",
+			"#fabd2f",
+			"#83a598",
+			"#d3869b",
+			"#8ec07c",
+			"#d5c4a1",
+		},
+		brights = {
+			"#484442",
+			"#fb4934",
+			"#b8bb26",
+			"#fabd2f",
+			"#83a598",
+			"#d3869b",
+			"#8ec07c",
+			"#fbf1c7",
+		},
 	},
 }
-
-config.font = wezterm.font("JetBrains Mono")
-config.font_size = 12
+config.font = wezterm.font("FiraCode Nerd Font", { weight = "Regular" })
+config.font_size = 16.0
+config.harfbuzz_features = { "calt=0" } -- turn off ligatures
 
 config.hide_tab_bar_if_only_one_tab = true
 config.use_fancy_tab_bar = false
@@ -52,39 +62,14 @@ config.window_padding = {
 
 config.enable_scroll_bar = false
 
-config.harfbuzz_features = { "calt=0" } -- turn off ligatures
-
 config.window_frame = {
-	-- The font used in the tab bar.
-	-- Roboto Bold is the default; this font is bundled
-	-- with wezterm.
-	-- Whatever font is selected here, it will have the
-	-- main font setting appended to it to pick up any
-	-- fallback fonts you may have used there.
-	font = wezterm.font({ family = "JetBrains Mono", weight = "Bold" }),
-
-	-- The size of the font in the tab bar.
-	-- Default to 10.0 on Windows but 12.0 on other systems
-	font_size = 15.0,
-
-	-- The overall background color of the tab bar when
-	-- the window is focused
+	font = wezterm.font({ family = "FiraCode", weight = "Bold" }),
+	font_size = 16.0,
 	active_titlebar_bg = "#333333",
-
-	-- The overall background color of the tab bar when
-	-- the window is not focused
 	inactive_titlebar_bg = "#333333",
 }
 
 config.keys = {
-	-- Turn off the default CMD-m Hide action, allowing CMD-m to
-	-- be potentially recognized and handled by the tab
-	{
-		key = "w",
-		mods = "ALT",
-		action = wezterm.action.CloseCurrentTab({ confirm = true }),
-	},
-
 	{
 		key = "w",
 		mods = "ALT",
@@ -105,29 +90,12 @@ for i = 1, 8 do
 	})
 end
 
-wezterm.on("update-right-status", function(window, pane)
+wezterm.on("update-right-status", function(window, _)
 	local date = wezterm.strftime("%Y-%m-%d %H:%M")
 
-	-- Make it italic and underlined
 	window:set_right_status(wezterm.format({
-		-- { Attribute = { Underline = 'None' } },
-		-- { Attribute = { Italic = false } },
 		{ Text = date },
 	}))
 end)
 
-wezterm.on("gui-startup", function(cmd)
-	local active_screen = wezterm.gui.screens()["active"]
-	local _, _, window = wezterm.mux.spawn_window(cmd or {})
-
-	if active_screen.width < 2560 then
-		-- Laptop: open full screen
-		window:gui_window():maximize()
-	else
-		-- Desktop: place on the right half of the screen
-		window:gui_window():set_position(active_screen.width / 2, 0)
-		window:gui_window():set_inner_size(active_screen.width / 2, active_screen.height)
-	end
-end)
--- and finally, return the configuration to wezterm
 return config
